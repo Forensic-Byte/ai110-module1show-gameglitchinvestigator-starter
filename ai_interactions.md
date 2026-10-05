@@ -1,76 +1,13 @@
-# AI Interactions Log
+# AI Interactions
 
-> **Stretch features only.** Only fill in the sections that apply to stretch features you attempted. If you did not attempt a stretch feature, leave its section blank or delete it. This file is not required for the core project.
+## Challenge 1: Edge-case test set
 
----
+**Task prompt in this collaboration:** “Can you do that entire tab please.” I followed the course's Challenge 1 instructions to identify edge inputs and generate pytest cases; I did not send a separate, verbatim test-generation prompt.
 
-## Agent Workflow (SF8)
+| Edge case | Why it was included | Test coverage |
+|---|---|---|
+| Empty and whitespace-only input | A blank guess should show a useful validation message and not count as a turn. | `test_empty_guess_is_rejected`; UI validation tests |
+| Decimal and malformed input | Converting a decimal with `int(float(...))` silently changes what the player entered. | `test_non_integer_guess_is_rejected` |
+| Negative and extremely large integers | Both are valid Python integers but outside the current game's selectable range; they should not crash or consume an attempt. | `test_integer_edge_cases_parse_without_crashing`; `test_out_of_range_guess_does_not_consume_an_attempt` |
 
-> Document your experience using an AI agent (e.g., Cursor Agent, Claude, Copilot) to make multi-step changes autonomously.
-
-**What task did you give the agent?**
-
-<!-- Describe the goal you asked the agent to accomplish -->
-
-**What did the agent do?**
-
-<!-- List the steps the agent took (files edited, commands run, etc.) -->
-
-**What did you have to verify or fix manually?**
-
-<!-- Describe anything the agent got wrong or that required human review -->
-
----
-
-## Test Generation (SF7)
-
-> Document how you used AI to help generate or improve tests.
-
-| Edge Case | Prompt Used | AI-Suggested Test | Did It Pass? | Your Reasoning |
-|-----------|-------------|-------------------|--------------|----------------|
-| | | | | |
-| | | | | |
-| | | | | |
-
----
-
-## Linting & Style (SF9)
-
-> Document your use of AI for linting or code style improvements.
-
-**Prompt used:**
-
-```
-<!-- Paste the prompt you gave the AI -->
-```
-
-**Linting output before:**
-
-```
-<!-- Paste relevant linter warnings/errors -->
-```
-
-**Changes applied:**
-
-<!-- Describe what you changed based on the AI's suggestions -->
-
----
-
-## Model Comparison (SF11)
-
-> Compare two AI models on the same task.
-
-**Task given to both models:**
-
-<!-- Describe what you asked each model to do -->
-
-| | Model A | Model B |
-|-|---------|---------|
-| **Model name** | | |
-| **Response summary** | | |
-| **More Pythonic?** | | |
-| **Clearer explanation?** | | |
-
-**Which did you prefer and why?**
-
-<!-- Your conclusion -->
+**Review and correction:** An early draft set the “clear guess” marker inside the shared reset helper. AppTest showed that changing difficulty then cleared the first guess on the next rerun. I moved that marker to the explicit New Game button and kept difficulty changes responsible for resetting only the newly selected game's state.
